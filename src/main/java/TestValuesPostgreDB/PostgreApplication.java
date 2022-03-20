@@ -1,13 +1,31 @@
 package TestValuesPostgreDB;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.jdbc.core.JdbcTemplate;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+@SpringBootApplication
 public class PostgreApplication {
 
+    @Autowired
+    private JdbcTemplate jdbcTemplate;
+
     public static void main(String[] args) throws SQLException {
+
+        SpringApplication.run(PostgreApplication.class, args);
+    }
+
+    public void run(String... args){
 
         Connection c = null;
         Statement statement = null;
@@ -34,7 +52,6 @@ public class PostgreApplication {
         }
 
         System.out.println("Opened database successfully");
-
 
     }
 }
