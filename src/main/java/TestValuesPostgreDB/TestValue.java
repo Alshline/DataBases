@@ -12,52 +12,73 @@ public class TestValue {
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     @Getter
-    private int id;
+    private Integer id;
 
     @Column (name = "emptyCapWeight")
     @Getter
     @Setter
-    private double emptyCapWeight;
+    private Double emptyCapWeight;
 
     @Column (name = "fullCapWeight")
     @Getter
     @Setter
-    private double fullCapWeight;
+    private Double fullCapWeight;
 
     @Column (name = "hitch")
     @Getter
     @Setter
-    private double hitch;
+    private Double hitch;
 
     @Column (name = "compHeight")
     @Getter
     @Setter
-    private double compHeight;
+    private Double compHeight;
 
     @Column (name = "fullHeight")
     @Getter
     @Setter
-    private double fullHeight;
+    private Double fullHeight;
 
     @Column (name = "actuationTime")
     @Getter
     @Setter
-    private double actuationTime;
+    private Double actuationTime;
 
     @Column (name = "imas")
     @Getter
     @Setter
-    private double imas;
+    private Double imas;
 
     @Column (name = "ilin")
     @Getter
     @Setter
-    private double ilin;
+    private Double ilin;
 
     @Column (name = "density")
     @Getter
     @Setter
-    private double density;
+    private Double density;
+
+    // need to lombok this
+    public TestValue(Double emptyCapWeight,
+                     Double fullCapWeight,
+                     Double hitch,
+                     Double compHeight,
+                     Double fullHeight,
+                     Double actuationTime,
+                     Double imas,
+                     Double ilin,
+                     Double density){
+        this.emptyCapWeight = emptyCapWeight;
+        this.fullCapWeight = fullCapWeight;
+        this.hitch = hitch;
+        this.compHeight = compHeight;
+        this.fullHeight = fullHeight;
+        this.actuationTime = actuationTime;
+        this.imas = imas;
+        this.ilin = ilin;
+        this.density = density;
+    }
 
     public String toString(){
         return "TestValue " +
