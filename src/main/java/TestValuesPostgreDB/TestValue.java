@@ -80,6 +80,10 @@ public class TestValue {
         this.density = density;
     }
 
+    public TestValue(){
+
+    }
+
     public String toString(){
         return "TestValue " +
                 "[id=" +id+
