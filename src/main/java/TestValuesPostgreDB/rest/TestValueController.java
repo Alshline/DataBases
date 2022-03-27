@@ -1,23 +1,16 @@
-package TestValuesPostgreDB;
+package TestValuesPostgreDB.rest;
 
+import TestValuesPostgreDB.model.TestValue;
+import TestValuesPostgreDB.reporitory.TestValueRepository;
+import TestValuesPostgreDB.service.TestServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,30 +19,17 @@ import java.util.Optional;
 @CrossOrigin (origins = "http://localhost:8081")
 @RestController
 @Controller
+@RequestMapping("/TestValues")
 public class TestValueController {
 
     @Autowired
     private TestValueRepository testValueRepository;
 
-    @GetMapping("/TestValues")
-    public ResponseEntity<List<TestValue>> getAllTestValues(@RequestParam(required = false) Integer id){
-        try {
-            List<TestValue> testValueList = new ArrayList<TestValue>();
-            if (id==null)
-                testValueRepository.findAll().forEach(testValueList::add);
-            else
-                testValueRepository.findAllById(id).forEach(testValueList::add);
-            if (testValueList.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(testValueList, HttpStatus.OK);
-        } catch (Exception exception){
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("{id}")
+    public ResponseEntity<TestValue> getTestValueById(@PathVariable("id") Long id){
+        if (id==null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-    }
-
-    @GetMapping("/TestValues/{id}")
-    public ResponseEntity<TestValue> getTestValueById(@PathVariable("id") Integer id){
         Optional<TestValue> optionalTestValue = testValueRepository.findById(id);
         if (optionalTestValue.isPresent())
             return new ResponseEntity<>(optionalTestValue.get(),HttpStatus.OK);
@@ -57,8 +37,12 @@ public class TestValueController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @PostMapping("/TestValues")
+    @PostMapping("")
     public ResponseEntity<TestValue> createTestValue(@RequestBody TestValue testValue){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        if (testValue == null){
+            return new ResponseEntity<TestValue>(HttpStatus.BAD_REQUEST);
+        }
         try{
             TestValue postTestValue = testValueRepository
                     .save(new TestValue(testValue.getEmptyCapWeight(),
@@ -70,14 +54,15 @@ public class TestValueController {
                             testValue.getImas(),
                             testValue.getIlin(),
                             testValue.getDensity()));
-            return new ResponseEntity<>(postTestValue,HttpStatus.CREATED);
+            return new ResponseEntity<>(postTestValue,httpHeaders,HttpStatus.CREATED);
         } catch (Exception exception){
             return new ResponseEntity<>(null,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping ("/TestValues/{id}")
-    public ResponseEntity<TestValue> updateTestValues (@PathVariable("id") Integer id, @RequestBody TestValue testValue){
+    @PutMapping ("{id}")
+    public ResponseEntity<TestValue> updateTestValues (@PathVariable("id") Long id, @RequestBody TestValue testValue){
+        HttpHeaders httpHeaders = new HttpHeaders();
         Optional<TestValue> optionalTestValue = testValueRepository.findById(id);
         if (optionalTestValue.isPresent()){
             TestValue putTestValue = optionalTestValue.get();
@@ -90,15 +75,14 @@ public class TestValueController {
             putTestValue.setImas(testValue.getImas());
             putTestValue.setIlin(testValue.getIlin());
             putTestValue.setDensity(testValue.getDensity());
-
-            return new ResponseEntity<>(testValueRepository.save(putTestValue),HttpStatus.OK);
+            return new ResponseEntity<>(testValueRepository.save(putTestValue),httpHeaders,HttpStatus.OK);
         }
         else
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping ("/TestValues/{id}")
-    public ResponseEntity<HttpStatus> deleteTestValue (@PathVariable("id") Integer id){
+    @DeleteMapping ("{id}")
+    public ResponseEntity<HttpStatus> deleteTestValue (@PathVariable("id") Long id){
         try {
             testValueRepository.deleteById(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -107,8 +91,22 @@ public class TestValueController {
         }
     }
 
-    @DeleteMapping ("/TestValues")
-    public ResponseEntity<HttpStatus> deleteAllTestValue (){
+    @GetMapping("")
+    public ResponseEntity<List<TestValue>> getAllTestValues(){
+        try {
+            List<TestValue> testValueList = new ArrayList<TestValue>();
+            testValueRepository.findAll().forEach(testValueList::add); //functional interface need to rework (::add)
+            if (testValueList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(testValueList, HttpStatus.OK);
+        } catch (Exception exception){
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @DeleteMapping ("")
+    public ResponseEntity<HttpStatus> deleteAllTestValues (){
         try {
             testValueRepository.deleteAll();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -117,12 +115,3 @@ public class TestValueController {
         }
     }
 }
-
-/*
-@GetMapping("/TestValues")
-    public String listAll (Model model){
-        List<TestValue> testValueList = testValueRepository.findAll();
-        model.addAttribute("testValueList", testValueList);
-
-        return "testValueList";
- */

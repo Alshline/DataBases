@@ -3,10 +3,16 @@ package TestValuesPostgreDB;
 public class TestOperations {
 
     public String connectToTable (){
-        return  "CREATE TABLE IF NOT EXISTS TEST" +
-                "(ID        INT             NOT NULL," +
-                " FIRST     NUMERIC(2)      NOT NULL," +
-                " SECOND    NUMERIC(2)      NOT NULL," +
-                " THIRD     NUMERIC(2)      NOT NULL)";
+        return  "CREATE TABLE IF NOT EXISTS TestValues" +
+                "(id              INTEGER PRIMARY KEY," +
+                " emptyCapWeight  DECIMAL(2) NOT NULL," +
+                " fullCapWeight   DECIMAL(2) NOT NULL," +
+                " hitch           DECIMAL(2) NOT NULL," +
+                " compHeight      DECIMAL(2) NOT NULL," +
+                " fullHeight      DECIMAL(2) NOT NULL," +
+                " actuationTime   DECIMAL(2) NOT NULL," +
+                " imas            DECIMAL(2) NOT NULL," +
+                " ilin            DECIMAL(2) NOT NULL," +
+                " density         DECIMAL(2) NOT NULL)";
     }
 }

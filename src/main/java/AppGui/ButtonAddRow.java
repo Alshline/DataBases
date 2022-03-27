@@ -9,10 +9,6 @@ import java.awt.event.ActionListener;
 
 public class ButtonAddRow extends JButton {
 
-    @Getter
-    @Setter
-    Table table;
-
     public ButtonAddRow (Table table, TableModel tableModel){
         super("AddRow");
         addActionListener(new ActionListener() {

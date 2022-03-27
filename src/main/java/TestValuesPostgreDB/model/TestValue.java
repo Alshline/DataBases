@@ -1,65 +1,46 @@
-package TestValuesPostgreDB;
+package TestValuesPostgreDB.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
 @Entity
 @Table (name = "TestValues")
-public class TestValue {
-
-    @Id
-    @GeneratedValue (strategy = GenerationType.AUTO)
-    @Getter
-    private Integer id;
+@ToString
+@Getter
+@Setter
+public class TestValue extends BaseEntity{
 
     @Column (name = "emptyCapWeight")
-    @Getter
-    @Setter
     private Double emptyCapWeight;
 
     @Column (name = "fullCapWeight")
-    @Getter
-    @Setter
     private Double fullCapWeight;
 
     @Column (name = "hitch")
-    @Getter
-    @Setter
     private Double hitch;
 
     @Column (name = "compHeight")
-    @Getter
-    @Setter
     private Double compHeight;
 
     @Column (name = "fullHeight")
-    @Getter
-    @Setter
     private Double fullHeight;
 
     @Column (name = "actuationTime")
-    @Getter
-    @Setter
     private Double actuationTime;
 
     @Column (name = "imas")
-    @Getter
-    @Setter
     private Double imas;
 
     @Column (name = "ilin")
-    @Getter
-    @Setter
     private Double ilin;
 
     @Column (name = "density")
-    @Getter
-    @Setter
     private Double density;
 
-    // need to lombok this
+    // need to lombok this maybe
     public TestValue(Double emptyCapWeight,
                      Double fullCapWeight,
                      Double hitch,
@@ -82,19 +63,5 @@ public class TestValue {
 
     public TestValue(){
 
-    }
-
-    public String toString(){
-        return "TestValue " +
-                "[id=" +id+
-                ", emptyCapWeight=" +emptyCapWeight+
-                ", fullCapWeight=" +fullCapWeight+
-                ", hitch=" +hitch+
-                ", compHeight=" +compHeight+
-                ", fullHeight=" +fullHeight+
-                ", actuationTime=" +actuationTime+
-                ", imas=" +imas+
-                ", ilin=" +ilin+
-                ", density=" +density+ "]";
     }
 }

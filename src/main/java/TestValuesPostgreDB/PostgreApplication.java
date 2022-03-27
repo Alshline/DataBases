@@ -27,24 +27,24 @@ public class PostgreApplication {
 
     public void run(String... args){
 
-        Connection c = null;
+        Connection connection = null;
         Statement statement = null;
 
         try {
             Class.forName("org.postgresql.Driver");
-            c= DriverManager.getConnection("jdbc:postgresql://localhost:5432/TestValues",
+            connection= DriverManager.getConnection("jdbc:postgresql://localhost:5432/TestValues",
                     "postgres", "root");
-            c.setAutoCommit(false);
+            connection.setAutoCommit(false);
 
             TestOperations testOperations = new TestOperations();
 
-            statement = c.createStatement();
+            statement = connection.createStatement();
             String sql = testOperations.connectToTable();
             statement.execute(sql);
 
             statement.close();
-            c.commit();
-            c.close();
+            connection.commit();
+            connection.close();
         } catch (Exception exception){
             exception.printStackTrace();
             System.err.println(exception.getClass().getName()+": "+exception.getMessage());
